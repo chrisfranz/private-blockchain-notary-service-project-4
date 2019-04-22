@@ -1,12 +1,8 @@
 {
-  "name": "private-blockchain-notary-service",
+  "name": "private-blockchain-notary-service-project-4",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
-  },
   "dependencies": {
     "bitcoinjs-lib": "^4.0.2",
     "bitcoinjs-message": "^2.0.0",
@@ -16,10 +12,22 @@
     "hex2ascii": "0.0.3",
     "level": "^4.0.0"
   },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server-dev": "nodemon src/app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisfranz/private-blockchain-notary-service-project-4.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.18.11"
-  }
+  "bugs": {
+    "url": "https://github.com/chrisfranz/private-blockchain-notary-service-project-4/issues"
+  },
+  "homepage": "https://github.com/chrisfranz/private-blockchain-notary-service-project-4#readme"
 }
