@@ -15,9 +15,23 @@ app.post('/requestValidation',
     res.send(JSON.stringify(response));
 })
 
-app.post('message-signature/validate', 
+app.post('/message-signature/validate',
+  validation.validateMessageSignature,
   (req, res) => {
-
+    const { locals: { response } } = res;
+    res.send(JSON.stringify(response));
 })
+
+app.post('/block', 
+  validation.block,
+  (req, res) => {
+    res.send('address found in mempool!')
+})
+
+app.get('/stars/hash:')
+
+app.get('/stars/address:')
+
+app.get('block/height:')
 
 app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}...`));
