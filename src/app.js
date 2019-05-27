@@ -18,20 +18,36 @@ app.post('/requestValidation',
 app.post('/message-signature/validate',
   validation.validateMessageSignature,
   (req, res) => {
-    const { locals: { response } } = res;
+    const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.post('/block', 
-  validation.block,
+  validation.addBlock,
   (req, res) => {
-    res.send('address found in mempool!')
+    const { response } = res.locals;
+    res.send(JSON.stringify(response));
 })
 
-app.get('/stars/hash:')
+app.get('/stars/hash:hash', 
+  validation.getBlockByHash,
+  (req, res) => {
+    const { response } = res.locals;
+    res.send(JSON.stringify(response));
+})
 
-app.get('/stars/address:')
+app.get('/stars/address:address', 
+  validation.getBlockByAddress,
+  (req, res) => {
+    const { response } = res.locals;
+    res.send(JSON.stringify(response));
+})
 
-app.get('block/height:')
+app.get('/block/:height', 
+validation.getBlockByHeight,
+(req, res) => {
+  const { response } = res.locals;
+  res.send(JSON.stringify(response));
+})
 
 app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}...`));
