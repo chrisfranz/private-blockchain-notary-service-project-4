@@ -7,7 +7,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const validation = require('./taskController/validation');
-const blockchain = require('./taskController/blockchain');
 
 app.post('/requestValidation',
   validation.validateRequest,
@@ -24,28 +23,28 @@ app.post('/message-signature/validate',
 })
 
 app.post('/block', 
-  blockchain.addBlock,
+  validation.addBlock,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/stars/hash:hash', 
-  blockchain.getBlockByHash,
+  validation.getBlockByHash,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/stars/address:address', 
-  blockchain.getBlockByAddress,
+  validation.getBlockByAddress,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/block/:height', 
-  blockchain.getBlockByHeight,
+  validation.getBlockByHeight,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));

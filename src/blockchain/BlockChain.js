@@ -9,7 +9,7 @@ const Block = require('./Block.js');
 class Blockchain {
 
   constructor() {
-    this.bd = new LevelSandbox.LevelSandbox();
+    this.db = new LevelSandbox.LevelSandbox();
     this.generateGenesisBlock();
   }
 
@@ -29,38 +29,45 @@ class Blockchain {
 
   // Get block height, it is a helper method that return the height of the blockchain
   getBlockHeight() {
-    return this.bd.getBlocksCount();
+    return this.db.getBlocksCount();
   }
 
   // Add new block
-  async addBlock (newBlock) {
+  async addBlock (body) {
+    const newBlock = new Block.Block();
     // get number of blocks in store
     const blockCount = await this.getBlockHeight();
     // get previous block hash, assign to newBlock
     if (blockCount > -1) {
       newBlock.height = blockCount + 1;
-      let prevBlock = await this.getBlock(blockCount);
+      let prevBlock = await this.getBlockByHeight(blockCount);
       let prevHash = prevBlock.hash;
       newBlock.previousBlockHash = prevHash
     }    
     // assign new block time
     newBlock.time = new Date().getTime().toString().slice(0, -3);
+    // assign body
+    newBlock.body = body
     // hash newBlock
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
     // save newBlock
-    return this.bd.addLevelDBData(newBlock.height, JSON.stringify(newBlock).toString());
+    return this.db.addLevelDBData(newBlock.height, JSON.stringify(newBlock).toString());
   }
+  // Get Block By Hash
+
+  // Get Block By Address
+
 
   // Get Block By Height
-  getBlock(blockHeight) {
-    return this.bd.getLevelDBData(blockHeight)
+  getBlockByHeight(blockHeight) {
+    return this.db.getLevelDBData(blockHeight)
   }
 
   // Validate if Block is being tampered by Block Height
   async validateBlock(height) {
     // Add your code here
     // get block associated with height
-    const block = await this.getBlock(height);
+    const block = await this.getBlockByHeight(height);
     if (!block) return
     // make copy of block to re-hash
     const blockCopy = {...block};
@@ -95,9 +102,9 @@ class Blockchain {
       }
       // check that hash of currentBlock is equal to previousBlockHash of next block
       if (i < blockHeight) {
-        const block = await this.getBlock(i);
+        const block = await this.getBlockByHeight(i);
         const hash = block.hash;
-        const nextBlock = await this.getBlock(i + 1);
+        const nextBlock = await this.getBlockByHeight(i + 1);
         const nextHash = nextBlock.previousBlockHash;
         if (hash !== nextHash && !errorLog.includes(i)) {
           errorLog.push(`The link between Block ${i} and Block ${i + 1}: invalid`);
@@ -114,7 +121,7 @@ class Blockchain {
   _modifyBlock(height, block) {
     let self = this;
     return new Promise( (resolve, reject) => {
-      self.bd.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
+      self.db.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
         resolve(blockModified);
       }).catch((err) => { console.log(err); reject(err)});
     });
