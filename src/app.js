@@ -6,7 +6,8 @@ const PORT = 8000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const validation = require('./taskController/validation')
+const validation = require('./taskController/validation');
+const blockchain = require('./taskController/blockchain');
 
 app.post('/requestValidation',
   validation.validateRequest,
@@ -23,31 +24,31 @@ app.post('/message-signature/validate',
 })
 
 app.post('/block', 
-  validation.addBlock,
+  blockchain.addBlock,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/stars/hash:hash', 
-  validation.getBlockByHash,
+  blockchain.getBlockByHash,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/stars/address:address', 
-  validation.getBlockByAddress,
+  blockchain.getBlockByAddress,
   (req, res) => {
     const { response } = res.locals;
     res.send(JSON.stringify(response));
 })
 
 app.get('/block/:height', 
-validation.getBlockByHeight,
-(req, res) => {
-  const { response } = res.locals;
-  res.send(JSON.stringify(response));
+  blockchain.getBlockByHeight,
+  (req, res) => {
+    const { response } = res.locals;
+    res.send(JSON.stringify(response));
 })
 
 app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}...`));
