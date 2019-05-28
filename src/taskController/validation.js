@@ -13,7 +13,7 @@ const mempoolValid = {};
 
 module.exports = {
   validateRequest(req, res, next) {
-    const { body: { address } } = req;
+    const address = req.body.address
     const time = getTimeInMs();
 
     if (!mempool[address]) {
@@ -99,26 +99,31 @@ module.exports = {
   },
   async getBlockByHash(req, res, next) {
     const hash = req.params.hash;
-    const blockHeight = await starChain.getBlockHeight();
-    let response;
-    for (let i = blockHeight; i > 0; i--) {
-      let block = await starChain.getBlockByHeight(i);
-      if (block.hash === hash) response = block;
+    try {
+      const block = await starChain.getBlockByHash(hash);
+      if (!block) {
+        res.send(`There are no records matching hash: ${hash}`)
+      }
+      console.log('block in middleware: ', block)
+      res.locals.response = formatResponse(block);
+      next();
+    } catch (error) {
+      console.error(error)
     }
-    // add condition to handle no hash found
-    res.locals.response = formatResponse(response);
-    next();
   },
   async getBlockByAddress(req, res, next) {
     const address = req.params.address;
-    console.log('address: ', address)
     const blockHeight = await starChain.getBlockHeight();
     let response = [];
     for (let i = blockHeight; i > 0; i--) {
       let block = await starChain.getBlockByHeight(i);
       if (block.body.address === address) response.push(formatResponse(block));
     }
-    res.locals.response = formatResponse(response);
+    if (!response.length) {
+      res.send(`There are no records matching address: ${address}`)
+      return;
+    }
+    res.locals.response = response;
     next();
   },
   async getBlockByHeight(req, res, next) {

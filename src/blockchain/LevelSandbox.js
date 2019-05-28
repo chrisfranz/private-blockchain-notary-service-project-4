@@ -30,6 +30,28 @@ class LevelSandbox {
     });
   }
 
+  // Get data from levelDB by hash
+  getBlockByHash(hash) {
+    let self = this;
+    let block = null;
+    return new Promise((resolve, reject) => {
+      self.db.createReadStream()
+        .on('data', data => {
+          let blockData = JSON.parse(data.value)
+          let blockHash = blockData.hash
+
+          
+          if (blockHash === hash) {
+            console.log('yes, bitches');
+            console.log('blockData: ', blockData)
+            block = blockData;
+          };
+        })
+        .on('error', err => reject(err))
+        .on('close', () => resolve(block))
+    })
+  }
+
   // Add data to levelDB with key and value (Promise)
   addLevelDBData(key, value) {
     let self = this;
