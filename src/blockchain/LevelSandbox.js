@@ -13,7 +13,7 @@ class LevelSandbox {
 
   // Get data from levelDB with key (Promise)
   getLevelDBData(key) {
-    let self = this;
+    const self = this;
     return new Promise((resolve, reject) => {
       // Add your code here, remember in Promises you need to resolve() or reject()
       self.db.get(key, (err, value) => {
@@ -32,18 +32,14 @@ class LevelSandbox {
 
   // Get data from levelDB by hash
   getBlockByHash(hash) {
-    let self = this;
+    const self = this;
     let block = null;
     return new Promise((resolve, reject) => {
       self.db.createReadStream()
         .on('data', data => {
-          let blockData = JSON.parse(data.value)
-          let blockHash = blockData.hash
-
-          
+          const blockData = JSON.parse(data.value)
+          const blockHash = blockData.hash
           if (blockHash === hash) {
-            console.log('yes, bitches');
-            console.log('blockData: ', blockData)
             block = blockData;
           };
         })
@@ -52,9 +48,26 @@ class LevelSandbox {
     })
   }
 
+  getBlockByAddress(address) {
+    const self = this;
+    const blockArray = [];
+    return new Promise((resolve, reject) => {
+      self.db.createReadStream()
+        .on('data', data => {
+          const blockData = JSON.parse(data.value)
+          const blockAddress = blockData.body.address
+          if (blockAddress === address) {
+            blockArray.push(blockData);
+          };
+        })
+        .on('error', err => reject(err))
+        .on('close', () => resolve(blockArray))
+    })
+  }
+
   // Add data to levelDB with key and value (Promise)
   addLevelDBData(key, value) {
-    let self = this;
+    const self = this;
     return new Promise((resolve, reject) => {
       // Add your code here, remember in Promises you need to resolve() or reject() 
       self.db.put(key, value, (err) => {
@@ -69,7 +82,7 @@ class LevelSandbox {
 
   // Method that return the height
   getBlocksCount() {
-    let self = this;
+    const self = this;
     let count = -1;
     return new Promise((resolve, reject) => {
     // Add your code here, remember in Promises you need to resolve() or reject()

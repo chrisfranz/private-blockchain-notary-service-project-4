@@ -103,29 +103,31 @@ module.exports = {
       const block = await starChain.getBlockByHash(hash);
       if (!block) {
         res.send(`There are no records matching hash: ${hash}`)
-      }
-      console.log('block in middleware: ', block)
+      };
       res.locals.response = formatResponse(block);
       next();
     } catch (error) {
       console.error(error)
+      res.status(500).send('There was an error accessing the blockchain')
     }
   },
   async getBlockByAddress(req, res, next) {
-    const address = req.params.address;
-    const blockHeight = await starChain.getBlockHeight();
-    let response = [];
-    for (let i = blockHeight; i > 0; i--) {
-      let block = await starChain.getBlockByHeight(i);
-      if (block.body.address === address) response.push(formatResponse(block));
+    const address = req.body.address;
+    try {
+      const blockArray = await starChain.getBlockByAddress(address);
+      if (!blockArray.length) {
+        res.send(`There are no records matching address: ${address}`)
+        return;
+      }
+      const response = blockArray.map(block => formatResponse(block));
+      res.locals.response = response;
+      next();
+    } catch (error) {
+      console.error(error)
+      res.status(500).send('There was an error accessing the blockchain')
     }
-    if (!response.length) {
-      res.send(`There are no records matching address: ${address}`)
-      return;
-    }
-    res.locals.response = response;
-    next();
   },
+
   async getBlockByHeight(req, res, next) {
     const height = req.params.height;
     try {

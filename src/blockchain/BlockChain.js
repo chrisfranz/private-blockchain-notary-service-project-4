@@ -54,10 +54,12 @@ class Blockchain {
     return this.db.addLevelDBData(newBlock.height, JSON.stringify(newBlock).toString());
   }
   // Get Block By Hash
-
-  // Get Block By Address
   getBlockByHash(hash) {
     return this.db.getBlockByHash(hash);
+  }
+  // Get Block By Address
+  getBlockByAddress(address) {
+    return this.db.getBlockByAddress(address);
   }
 
   // Get Block By Height
