@@ -30,9 +30,9 @@ To setup the notary service complete the following:
   The request body should contain the following JSON data:
   ````
   {
-"address":"19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
- "signature":"H8K4+1MvyJo9tcr2YN2KejwvX1oqneyCH+fsUL1z1WBdWmswB9bijeFfOfMqK68kQ5RO6ZxhomoXQG3fkLaBl+Q="
-}
+    "address":"19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
+    "signature":"H8K4+1MvyJo9tcr2YN2KejwvX1oqneyCH+fsUL1z1WBdWmswB9bijeFfOfMqK68kQ5RO6ZxhomoXQG3fkLaBl+Q="
+  }
   `````
 
 ### 4. Save your star data on the blockchain
@@ -49,10 +49,12 @@ To setup the notary service complete the following:
 }
   ````
 
-### Star Look-Up
+### 5. Star Look-Up
 
 Look up your star on the blockchain with the following `GET` requests
 
 Hash `http://localhost:8000/stars/hash[HASH]`
+
 Address `http://localhost:8000/stars/address[ADDRESS]`
+
 Block `http://localhost:8000/block/[HEIGHT]`
