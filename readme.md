@@ -48,3 +48,11 @@ To setup the notary service complete the following:
             }
 }
   ````
+
+### Star Look-Up
+
+Look up your star on the blockchain with the following `GET` requests
+
+Hash `http://localhost:8000/stars/hash[HASH]`
+Address `http://localhost:8000/stars/address[ADDRESS]`
+Block `http://localhost:8000/block/[HEIGHT]`
