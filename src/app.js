@@ -11,43 +11,43 @@ const validation = require('./taskController/validation');
 app.post('/requestValidation',
   validation.validateRequest,
   (req, res) => {
-    const { locals: { response } } = res;
-    res.send(JSON.stringify(response));
+    const { response } = res.locals;
+    res.send(response);
 })
 
 app.post('/message-signature/validate',
   validation.validateMessageSignature,
   (req, res) => {
     const { response } = res.locals;
-    res.send(JSON.stringify(response));
+    res.send(response);
 })
 
 app.post('/block', 
   validation.addBlock,
   (req, res) => {
     const { response } = res.locals;
-    res.send(JSON.stringify(response));
+    res.send(response);
 })
 
-app.get('/stars/hash:hash', 
+app.get('/stars/hash::hash', 
   validation.getBlockByHash,
   (req, res) => {
     const { response } = res.locals;
-    res.send(JSON.stringify(response));
+    res.send(response);
 })
 
-app.get('/stars/address:address', 
+app.get('/stars/address::address', 
   validation.getBlockByAddress,
   (req, res) => {
     const { response } = res.locals;
-    res.send(JSON.stringify(response));
+    res.send(response);
 })
 
 app.get('/block/:height', 
   validation.getBlockByHeight,
   (req, res) => {
     const { response } = res.locals;
-    res.send(JSON.stringify(response));
+    res.send(response);
 })
 
 app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}...`));

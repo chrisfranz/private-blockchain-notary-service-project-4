@@ -54,15 +54,11 @@ module.exports = {
       requestTimeStamp,
       message, 
     } = request;
-    
-    // console.log('message: ', message, 'address: ', address, 'signature: ', signature)
-
-    // const isValid = bitcoinMessage.verify(message, address, signature);
-
-    // if (!isValid) {
-    //   res.send('invalid signature')
-    //   return;
-    // } 
+    const isValid = bitcoinMessage.verify(message, address, signature);
+    if (!isValid) {
+      res.send('invalid signature')
+      return;
+    } 
 
     const response = {
       registerStar: true,
@@ -92,10 +88,9 @@ module.exports = {
     };
 
       const block = await starChain.addBlock(body);
+      delete mempoolValid[address]
       res.locals.response = JSON.parse(block);
       next();
-
-
   },
   async getBlockByHash(req, res, next) {
     const hash = req.params.hash;
