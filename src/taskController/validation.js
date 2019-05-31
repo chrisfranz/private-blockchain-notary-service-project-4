@@ -53,10 +53,10 @@ module.exports = {
       message, 
     } = request;
     const isValid = bitcoinMessage.verify(message, address, signature);
-    // if (!isValid) {
-    //   res.send('invalid signature')
-    //   return;
-    // } 
+    if (!isValid) {
+      res.send('invalid signature')
+      return;
+    } 
 
     const response = {
       registerStar: true,
