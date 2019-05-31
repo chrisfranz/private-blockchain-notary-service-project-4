@@ -1,10 +1,8 @@
-const bitcoin = require('bitcoinjs-lib');
 const bitcoinMessage = require('bitcoinjs-message'); 
 const getTimeInMs = require('../utils/getTimeInMs');
 const formatResponse = require('../utils/formatResponse');
 
 const BlockChain = require('../blockchain/BlockChain.js');
-const Block = require('../blockchain/Block.js');
 let starChain = new BlockChain.Blockchain();
 
 const mempool = {};
@@ -55,10 +53,10 @@ module.exports = {
       message, 
     } = request;
     const isValid = bitcoinMessage.verify(message, address, signature);
-    if (!isValid) {
-      res.send('invalid signature')
-      return;
-    } 
+    // if (!isValid) {
+    //   res.send('invalid signature')
+    //   return;
+    // } 
 
     const response = {
       registerStar: true,
