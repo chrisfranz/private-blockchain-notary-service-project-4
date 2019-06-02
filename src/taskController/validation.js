@@ -106,7 +106,6 @@ module.exports = {
   },
   async getBlockByAddress(req, res, next) {
     const address = req.params.address;
-    console.log('address: ', address);
     try {
       const blockArray = await starChain.getBlockByAddress(address);
       if (!blockArray.length) {
